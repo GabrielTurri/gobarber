@@ -5,7 +5,7 @@
 
 temp/
 
-tmp/*
+backend/tmp/*
 !tmp/.gitkeep
 
 # dependencies
