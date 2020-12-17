@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useContext } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
-import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
 import { AuthContext } from '../../context/AuthContext';
@@ -14,7 +14,7 @@ import Button from '../../components/Button';
 
 import { Container, Content, Background } from './styles';
 
-interface signInFormData {
+interface SignInFormData {
   email: string;
   password: string;
 }
@@ -24,7 +24,7 @@ const SignIn: React.FC = () => {
   const { signIn } = useContext(AuthContext);
 
   const handleSubmit = useCallback(
-    async (data: signInFormData) => {
+    async (data: SignInFormData) => {
       try {
         const schema = Yup.object().shape({
           email: Yup.string()
