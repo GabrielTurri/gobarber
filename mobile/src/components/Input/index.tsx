@@ -19,21 +19,21 @@ interface InputRef {
   focus(): void;
 }
 
-const Input: React.RefForwardingComponent<InputRef, InputProps> = (
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = (
   { name, icon, ...rest },
   ref,
 ) => {
   const inputElementRef = useRef<any>(null);
 
   const {
-    registerField, defaultValue = '', fieldName, error,
+    registerField, fieldName, defaultValue = '', error,
   } = useField(name);
 
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue });
 
   useImperativeHandle(ref, () => ({
     focus() {
-      inputElementRef.current.focus();
+      inputElementRef.current?.focus();
     },
   }));
 
@@ -42,7 +42,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
-      setValue(ref:any, value) {
+      setValue(ref: any, value) {
         inputValueRef.current.value = value;
         inputElementRef.current.setNativeProps({ text: value });
       },
@@ -58,6 +58,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       <Icon name={icon} size={20} color="#666360" />
 
       <TextInput
+        ref={inputElementRef}
         keyboardAppearance="dark"
         placeholderTextColor="#666360"
         defaultValue={defaultValue}
