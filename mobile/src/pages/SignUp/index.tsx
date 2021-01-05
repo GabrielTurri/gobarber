@@ -9,6 +9,8 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
+import api from '../../services/api';
+
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import Input from '../../components/Input';
@@ -46,9 +48,14 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        // await api.post('/users', data);
+        await api.post('/users', data);
 
-        // history.push('/');
+        Alert.alert(
+          'Cadastro realizado com sucesso!',
+          'Você já pode fazer login na aplicaçãor',
+        );
+
+        navigation.goBack();
       } catch (err) {
         if (err instanceof Yup.ValidationError) {
           const errors = getValidationErrors(err);
@@ -63,7 +70,7 @@ const SignUp: React.FC = () => {
         );
       }
     },
-    [],
+    [navigation],
   );
 
   return (
@@ -120,7 +127,7 @@ const SignUp: React.FC = () => {
                 onSubmitEditing={() => { formRef.current?.submitForm(); }}
               />
 
-              <Button onPress={() => { formRef.current?.submitForm(); }}>Entrar</Button>
+              <Button onPress={() => { formRef.current?.submitForm(); }}>Cadastrar</Button>
             </Form>
           </Container>
         </ScrollView>
