@@ -1,12 +1,15 @@
-import React, { useRef } from 'react';
+import React, { useRef, useCallback } from 'react';
 import {
-  Image, View, KeyboardAvoidingView, ScrollView, Platform, TextInput,
+  Image, View, KeyboardAvoidingView, ScrollView, Platform, TextInput, Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
+
+import getValidationErrors from '../../utils/getValidationErrors';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -28,6 +31,41 @@ const SignUp: React.FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
+  const handleSignUp = useCallback(
+    async (data: Record<string, unknown>) => {
+      try {
+        const schema = Yup.object().shape({
+          name: Yup.string().required('Nome obrigatório'),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('E-mail obrigatório'),
+          password: Yup.string().min(6, 'No mínimo 6 dígitos'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        // await api.post('/users', data);
+
+        // history.push('/');
+      } catch (err) {
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+        Alert.alert(
+          'Erro no cadastro',
+          'Ocorreu um erro ao realizar cadastro. Por favor, tente novamente',
+        );
+      }
+    },
+    [],
+  );
+
   return (
     <>
       <KeyboardAvoidingView
@@ -46,7 +84,7 @@ const SignUp: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
 
-            <Form ref={formRef} onSubmit={(data) => { console.log(data); }} style={{ width: '100%' }}>
+            <Form ref={formRef} onSubmit={handleSignUp} style={{ width: '100%' }}>
               <Input
                 autoCapitalize="words"
                 name="name"
