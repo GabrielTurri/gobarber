@@ -4,8 +4,8 @@ import { getCustomRepository } from 'typeorm';
 import { parseISO } from 'date-fns';
 // Essa rota deve apenas Receber a requisição, chamar outro arquivo e devolver  uma resposta
 
-import AppointmentsRepository from '../repositories/AppointmentsRepositories';
-import CreateAppointmentService from '../services/CreateAppointmentService';
+import AppointmentsRepository from '../../modules/appointments/repositories/AppointmentsRepositories';
+import CreateAppointmentService from '../../modules/appointments/services/CreateAppointmentService';
 
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 

@@ -2,12 +2,12 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
 
-import Appointment from '../models/Appointment';
+import Appointment from '../entities/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepositories';
 // No service ficará apenas as regras de negócio
 // o service nunca tem acesso as variaveis de request/response
 
-import AppError from '../errors/AppError';
+import AppError from '../../../shared/errors/AppError';
 
 // DTO
 interface Request {
